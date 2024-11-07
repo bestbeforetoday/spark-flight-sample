@@ -29,6 +29,7 @@ oauth_token() {
 
 submit_json() {
     local JQ_EXPRESSION
+    # shellcheck disable=SC2016
     JQ_EXPRESSION='.application_details.application |= $APP_URL
  | .application_details.env.AUTH_KEY |= $AUTH_KEY
  | .application_details.conf."spark.hadoop.fs.cos.data.access.key" |= $ACCESS_KEY
