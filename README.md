@@ -200,7 +200,7 @@ The deployed application is run by submitting a job to our Analytics Engine inst
 2. Submit a job to IBM Analytics Engine, supplying the ID of the Analytics Engine instance on which it should be run, and the COS bucket name and path within that bucket of the Spark application JAR uploaded in the **Deploy** step above, for example `my-cos-bucket/path/to/spark-flight-sample.jar`:
 
    ```shell
-   ./scripts/spark-submit.sh '<Analytics Engine instance ID>' '<Spark application path'
+   ./scripts/spark-submit.sh '<Analytics Engine instance ID>' '<Spark application path>'
    ```
 
    The `spark-submit.sh` script carries out the following operations:
