@@ -1,0 +1,13 @@
+{
+    "application_details": {
+        "application": "",
+        "conf": {
+            "spark.hadoop.fs.cos.data.endpoint": "",
+            "spark.hadoop.fs.cos.data.access.key": "",
+            "spark.hadoop.fs.cos.data.secret.key": ""
+        },
+        "env": {
+            "AUTH_KEY": ""
+        }
+    }
+}

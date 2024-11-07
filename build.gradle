@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'pmd'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.adarshr.test-logger' version '4.0.0'
+    id 'com.github.ben-manes.versions' version '0.51.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
+    compileOnly 'org.apache.spark:spark-sql_2.12:3.4.4'
+
+    implementation platform('org.junit:junit-bom:5.11.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javadoc {
+    options {
+        addBooleanOption('Xwerror', true)
+    }
+}
+
+jar {
+    zip64 = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes 'Main-Class': 'com.ibm.sample.spark.App'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+}
+
+application {
+    mainClass = 'com.ibm.sample.spark.App'
+}
+
+pmd {
+    toolVersion = '7.7.0'
+    ruleSetFiles = files 'pmd-ruleset.xml'
+    ruleSets = [] // explicitly set to empty to avoid using default configuration
+    ignoreFailures = false
+}
+
+spotless {
+    format 'misc', {
+        target '*.gradle', '.gitattributes', '.gitignore'
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+    java {
+        removeUnusedImports()
+        palantirJavaFormat('2.50.0').formatJavadoc(true)
+        formatAnnotations()
+        licenseHeaderFile(file('license-header.txt'))
+    }
+}
